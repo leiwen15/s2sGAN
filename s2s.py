@@ -89,8 +89,11 @@ embedding_layer=Embedding(len(word_index)+1,EMBEDDING_DIM,
 
 sentence_input=Input(shape=(MAX_SENT_LENGTH,),dtype='int32',name='sentence_input')
 embedded_sequences=embedding_layer(sentence_input)
-sent_lstm=LSTM(EMBEDDING_DIM,input_shape=(MAX_SENTS,EMBEDDING_DIM))(embedded_sequences)
+print('embedded_sequences shape:',embedded_sequences.shape)
+sent_lstm=LSTM(EMBEDDING_DIM,input_shape=(MAX_SENTS,EMBEDDING_DIM),return_sequences='True')(embedded_sequences)
+print('sent_lstm shape:',sent_lstm.shape)
 generator=Dense(EMBEDDING_DIM)(sent_lstm)
+print('generator shape:',generator.shape)
 
 abs_decoder=LSTM(EMBEDDING_DIM)(generator)
 abs_softmax=Activation('softmax')(abs_decoder)
